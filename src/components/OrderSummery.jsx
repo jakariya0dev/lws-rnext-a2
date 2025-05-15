@@ -15,6 +15,11 @@ export default function OrderSummery({ orders, setOrders }) {
     setOrders(updatedOrders);
   };
 
+  const handleDelete = (orderId) => {
+    const updatedOrders = orders.filter((order) => order.id !== orderId);
+    setOrders(updatedOrders);
+  };
+
   return (
     <div className="md:col-span-2 h-[calc(100vh_-_130px)]">
       {/* <!-- Order Summary --> */}
@@ -95,6 +100,7 @@ export default function OrderSummery({ orders, setOrders }) {
                         order={order}
                         index={index}
                         handleDeliver={handleDeliver}
+                        handleDelete={handleDelete}
                       />
                     ))
                   : orders
@@ -105,6 +111,7 @@ export default function OrderSummery({ orders, setOrders }) {
                           order={order}
                           index={index}
                           handleDeliver={handleDeliver}
+                          handleDelete={handleDelete}
                         />
                       ))}
               </tbody>
