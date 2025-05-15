@@ -37,33 +37,22 @@ export default function CreateOrder({ setOrders }) {
   const [orderedItemsId, setOrderedItemsId] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
 
-  const handleCustomerNameChange = (e) => {
-    setCustomerName(e.target.value);
-  };
-
   const handleAddItem = (id) => {
-    setOrderedItemsId([...orderedItemsId, id]);
-
-    let totalPrice = 0;
-    orderedItemsId.forEach((itemId) => {
-      const item = items.find((item) => item.id === itemId);
-      if (item) {
-        totalPrice += item.price;
-      }
-    });
-    setTotalPrice(totalPrice);
+    const newOrderedItemsId = [...orderedItemsId, id];
+    setOrderedItemsId(newOrderedItemsId);
+    calcuateTotalPrice(newOrderedItemsId);
   };
 
   const handleRemoveItem = (id) => {
     const newOrderedItemsId = orderedItemsId.filter((itemId) => itemId !== id);
     setOrderedItemsId(newOrderedItemsId);
-    calcuateTotalPrice();
+    calcuateTotalPrice(newOrderedItemsId);
   };
 
-  const calcuateTotalPrice = () => {
+  const calcuateTotalPrice = (ordersId) => {
     let totalPrice = 0;
-    orderedItemsId.forEach((itemId) => {
-      const item = items.find((item) => item.id === itemId);
+    ordersId.forEach((id) => {
+      const item = items.find((item) => item.id === id);
       if (item) {
         totalPrice += item.price;
       }
@@ -107,9 +96,9 @@ export default function CreateOrder({ setOrders }) {
       <div className="mb-4">
         <label className="block text-sm font-medium mb-2">Customer Name</label>
         <input
-          onChange={handleCustomerNameChange}
+          onChange={(e) => setCustomerName(e.target.value)}
           type="text"
-          defaultValue={customerName}
+          value={customerName}
           className="w-full bg-gray-700 bg-opacity-50 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-primary transition-all duration-300"
         />
       </div>
