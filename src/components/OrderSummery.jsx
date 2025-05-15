@@ -1,6 +1,10 @@
+import { useState } from "react";
 import Search from "../assets/Search";
+import OrderItem from "./OrderItem";
 
 export default function OrderSummery({ orders, setOrders }) {
+  const [searchterm, setSearchterm] = useState("All");
+
   const handleDeliver = (orderId) => {
     const updatedOrders = orders.map((order) => {
       if (order.id === orderId) {
@@ -56,7 +60,13 @@ export default function OrderSummery({ orders, setOrders }) {
 
           <div className="flex gap-4 items-center">
             <Search />
-            <select className="appearance-none bg-zinc-900 accent-orange-600 border-none outline-none rounded-sm">
+            <select
+              onChange={(e) => {
+                setSearchterm(e.target.value);
+                console.log(searchterm);
+              }}
+              className="appearance-none bg-zinc-900 accent-orange-600 border-none outline-none rounded-sm"
+            >
               <option>All</option>
               <option>Pending</option>
               <option>Delivered</option>
@@ -78,30 +88,25 @@ export default function OrderSummery({ orders, setOrders }) {
               </thead>
               <tbody className="text-sm">
                 {/* <!-- Row 1 --> */}
-                {orders.map((order, index) => (
-                  <tr className="border-t border-gray-700">
-                    <td className="py-3">{index + 1}</td>
-                    <td className="py-3">{order.customerName}</td>
-                    <td className="py-3">{order.orderedItemsId.length}</td>
-                    <td className="py-3">{order.totalPrice}</td>
-                    <td className="py-3">
-                      <span className="text-red-500">{order.status}</span>
-                    </td>
-                    <td className="py-3">
-                      <button className="bg-gray-800 hover:bg-red-600 text-xs px-3 py-1 rounded-full mr-1 transition-colors duration-300">
-                        Delete
-                      </button>
-                      {order.status === "Pending" && (
-                        <button
-                          onClick={() => handleDeliver(order.id)}
-                          className="bg-gray-800 hover:bg-green-600 text-xs px-3 py-1 rounded-full transition-colors duration-300"
-                        >
-                          DELIVER
-                        </button>
-                      )}
-                    </td>
-                  </tr>
-                ))}
+                {searchterm === "All"
+                  ? orders.map((order, index) => (
+                      <OrderItem
+                        key={order.id}
+                        order={order}
+                        index={index}
+                        handleDeliver={handleDeliver}
+                      />
+                    ))
+                  : orders
+                      .filter((order) => order.status === searchterm)
+                      .map((order, index) => (
+                        <OrderItem
+                          key={order.id}
+                          order={order}
+                          index={index}
+                          handleDeliver={handleDeliver}
+                        />
+                      ))}
               </tbody>
             </table>
           </div>

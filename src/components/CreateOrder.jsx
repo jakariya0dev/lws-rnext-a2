@@ -39,7 +39,6 @@ export default function CreateOrder({ setOrders }) {
 
   const handleCustomerNameChange = (e) => {
     setCustomerName(e.target.value);
-    console.log(customerName);
   };
 
   const handleAddItem = (id) => {
