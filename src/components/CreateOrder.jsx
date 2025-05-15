@@ -1,10 +1,9 @@
 import { useState } from "react";
-import AddIcon from "../assets/add.svg";
 import Chicken from "../assets/chicken.svg";
 import Hamburger from "../assets/hamburger.svg";
 import Pizza from "../assets/pizza.svg";
-import RemoveIcon from "../assets/remove.svg";
 import Submarine from "../assets/submarine.svg";
+import MenuItem from "./MenuItem";
 
 const items = [
   {
@@ -16,22 +15,23 @@ const items = [
   {
     id: 2,
     name: "Chicken Nuggets",
-    price: 300,
+    price: 200,
     image: Chicken,
   },
   {
     id: 3,
     name: "Submarine Sandwich",
-    price: 300,
+    price: 400,
     image: Submarine,
   },
   {
     id: 4,
     name: "Pizza slices",
-    price: 300,
+    price: 100,
     image: Pizza,
   },
 ];
+
 export default function CreateOrder({ setOrders }) {
   const [customerName, setCustomerName] = useState("");
   const [orderedItemsId, setOrderedItemsId] = useState([]);
@@ -110,30 +110,13 @@ export default function CreateOrder({ setOrders }) {
           {/* <!-- Item 1 --> */}
 
           {items.map((item) => (
-            <div className="bg-gray-700 bg-opacity-30 rounded-md p-3 mb-3 flex justify-between items-center hover:bg-opacity-40 transition-all duration-300">
-              <div className="flex items-center">
-                <div className="w-12 h-12   flex items-center justify-center mr-3">
-                  <img src={item.image} alt="Hamburger" className="w-10 h-10" />
-                </div>
-                <div>
-                  <h3 className="font-medium">{item.name}</h3>
-                  <p className="text-xs text-gray-400">BDT 300</p>
-                </div>
-              </div>
-              <button
-                onClick={() =>
-                  orderedItemsId.includes(item.id)
-                    ? handleRemoveItem(item.id)
-                    : handleAddItem(item.id)
-                }
-                className="w-8 h-8 bg-gray-800 hover:bg-primary rounded-full flex items-center justify-center transition-colors duration-300"
-              >
-                <img
-                  src={orderedItemsId.includes(item.id) ? RemoveIcon : AddIcon}
-                  alt=""
-                />
-              </button>
-            </div>
+            <MenuItem
+              key={item.id}
+              item={item}
+              orderedItemsId={orderedItemsId}
+              handleAddItem={handleAddItem}
+              handleRemoveItem={handleRemoveItem}
+            />
           ))}
         </div>
       </div>
